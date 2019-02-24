@@ -9,7 +9,7 @@ const Work = {
     },
     GetAllEmployeesForNotification: function (entId, callback) {
         return db.query(
-            "SELECT `empLineId` FROM `Employee` WHERE `entId` = ? AND `empStatus` = 1 AND `userAuth` = 1;",
+            "SELECT `empLineId` FROM `Employee` WHERE `entId` = ? AND `empStatus` = 3 AND `userAuth` = 1;",
             [entId], callback
         );
     }
