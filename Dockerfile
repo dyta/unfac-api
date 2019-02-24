@@ -1,0 +1,13 @@
+FROM node
+
+WORKDIR /app
+ENV LINE_CHANNEL_ACCESS_TOKEN=${LINE_CHANNEL_ACCESS_TOKEN}
+ENV PORT=${PORT}
+
+COPY package.json /app
+RUN npm install
+
+COPY . /app
+CMD npm start
+EXPOSE 5000
+
