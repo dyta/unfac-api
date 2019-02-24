@@ -100,7 +100,6 @@ router.post("/v2/account/auth", function (req, res, next) {
             res.status(200).json(true);
           })
           .catch(function (error) {
-            console.log("error: ", error);
             res.status(204).json(false);
           });
       })
@@ -121,7 +120,6 @@ router.post("/v2/account/auth", function (req, res, next) {
             res.status(201).json(true);
           })
           .catch(function (error) {
-            console.log("error: ", error);
             res.status(204).json(false);
           });
       });
