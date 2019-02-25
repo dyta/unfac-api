@@ -57,6 +57,7 @@ router.post("/:id", async function (req, res, next) {
             } else {
                 firebase.activity.collection(`${req.params.id}`).doc(`${new Date().getTime()}`).set({
                     title: `เปิดใช้งาน API Service แล้ว`,
+                    color: '#009688',
                     time: new Date().getTime()
                 });
                 res.status(200).json(true);
@@ -112,6 +113,7 @@ router.post("/:id/liff", async function (req, res, next) {
             } else {
                 firebase.activity.collection(`${req.params.id}`).doc(`${new Date().getTime()}`).set({
                     title: `สร้างการเชื่อมต่อเต็มรูปแบบ`,
+                    color: '#009688',
                     time: new Date().getTime()
                 });
                 res.status(200).json(true);
