@@ -3,9 +3,9 @@ const router = express.Router();
 const Employee = require("../../models/app/Employee.model");
 const Firebase = require("../../config/firebase.admin.sdk");
 
-router.get("/:empLineId/:entId", function(req, res, next) {
+router.get("/:empLineId/:entId", function (req, res, next) {
   if (req.params.empLineId && req.params.entId) {
-    Employee.GetEmployeeByLineID(req.params, function(err, rows) {
+    Employee.GetEmployeeByLineID(req.params, function (err, rows) {
       if (err) {
         res.json(err);
       } else {
@@ -17,9 +17,23 @@ router.get("/:empLineId/:entId", function(req, res, next) {
   }
 });
 
-router.post("/:empLineId/:entId", async function(req, res, next) {
+router.put("/:empLineId/:entId", function (req, res, next) {
+  if (req.params.empLineId && req.params.entId) {
+    Employee.UpdateEmployeeByLineID(req.params, function (err, rows) {
+      if (err) {
+        res.json(err);
+      } else {
+        res.status(200).json(true);
+      }
+    });
+  } else {
+    res.status(204);
+  }
+});
+
+router.post("/:empLineId/:entId", async function (req, res, next) {
   if (req.params.empLineId && req.params.entId && req.body) {
-    Employee.CreateEmployee(req.params, req.body, function(err, rows) {
+    Employee.CreateEmployee(req.params, req.body, function (err, rows) {
       if (err) {
         res.json(err);
       } else {
@@ -31,9 +45,9 @@ router.post("/:empLineId/:entId", async function(req, res, next) {
   }
 });
 
-router.put("/:empLineId/:entId", async function(req, res, next) {
+router.put("/:empLineId/:entId", async function (req, res, next) {
   if (req.params.empLineId && req.body) {
-    Employee.UpdateEmployee(req.params.empLineId, req.body, function(
+    Employee.UpdateEmployee(req.params.empLineId, req.body, function (
       err,
       rows
     ) {
@@ -48,7 +62,7 @@ router.put("/:empLineId/:entId", async function(req, res, next) {
             image: `${req.body.empImage}`,
             time: new Date().getTime()
           });
-        Employee.GetEmployeeByLineID(req.params, function(err, rows) {
+        Employee.GetEmployeeByLineID(req.params, function (err, rows) {
           if (err) {
             res.json(err);
           } else {
