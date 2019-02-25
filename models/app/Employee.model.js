@@ -16,7 +16,7 @@ const Employee = {
     UpdateEmployeeByLineID: function (params, body, callback) {
         return db.query(
             "UPDATE `Employee` SET `empDisplayName`= ?, `empPictureUrl`= ? WHERE `empLineId` = ?;",
-            [body.displayName, body.pictureUrl, params.entId], callback
+            [body.displayName, body.pictureUrl, params.empLineId], callback
         );
     },
     UpdateEmployee: function (params, body, callback) {

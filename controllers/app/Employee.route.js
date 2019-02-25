@@ -17,9 +17,9 @@ router.get("/:empLineId/:entId", function (req, res, next) {
   }
 });
 
-router.put("/:empLineId/:entId", function (req, res, next) {
+router.put("/:empLineId/:entId/profile", function (req, res, next) {
   if (req.params.empLineId && req.params.entId) {
-    Employee.UpdateEmployeeByLineID(req.params, function (err, rows) {
+    Employee.UpdateEmployeeByLineID(req.params, req.body, function (err, rows) {
       if (err) {
         res.json(err);
       } else {
