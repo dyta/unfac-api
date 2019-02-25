@@ -3,6 +3,7 @@ const router = express.Router();
 const Request = require("../../models/console/Request.model");
 const Manufacture = require("../../models/console/Manufacture.model");
 const line = require("../../models/line.handleEvent");
+const Firebase = require("../../config/firebase.admin.sdk");
 
 // query  request work ในหน้าอนุมัติ
 router.get("/:id/:enterprise", function (req, res, next) {
@@ -42,6 +43,11 @@ router.put("/:id/:entId", function (req, res, next) {
                                 work: req.body,
                             }
                         }
+                        Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
+                            title: `${req.body.empFullname} ได้รับการอนุมัติทำงาน #${req.body.rwWorkId}`,
+                            image: req.body.workImages,
+                            time: new Date().getTime()
+                        });
                         line.handleEvent(event)
                     });
                 }
@@ -66,6 +72,11 @@ router.put("/:id/:entId", function (req, res, next) {
                         if (err) {
                             res.status(200).json(err);
                         } else {
+                            Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
+                                title: `${req.body.empFullname} ได้รับการอนุมัติทำงาน #${req.body.rwWorkId}`,
+                                image: req.body.workImages,
+                                time: new Date().getTime()
+                            });
                             let event = {
                                 message: {
                                     type: 'approve_your_work',

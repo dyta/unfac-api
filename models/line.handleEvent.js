@@ -180,7 +180,12 @@ handleEvent = async (event) => {
                                 "flex": 1,
                                 "contents": [{
                                     "type": "text",
-                                    "text": "จำนวน",
+                                    "text": "คำขอ",
+                                    "size": "sm",
+                                    "weight": "bold"
+                                }, {
+                                    "type": "text",
+                                    "text": "อนุมัติ",
                                     "size": "sm",
                                     "weight": "bold"
                                 }]
@@ -194,7 +199,12 @@ handleEvent = async (event) => {
                                 "flex": 4,
                                 "contents": [{
                                         "type": "text",
-                                        "text": event.message.work.approve + " รายการ",
+                                        "text": "จำนวน " + event.message.work.rwVolume + " รายการ",
+                                        "size": "sm"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "จำนวน " + event.message.work.approve + " รายการ",
                                         "size": "sm"
                                     },
                                     {
