@@ -19,6 +19,17 @@ router.get('/:entId', function (req, res, next) {
     }
 });
 
+router.get('/:entId/events', function (req, res, next) {
+    if (req.params.entId) {
+        Work.GetAllWorksForEvent(req.params.entId, function (err, rows) {
+            if (err) res.json(err);
+            else res.json(rows);
+        });
+    } else {
+        res.status(200).json([]);
+    }
+});
+
 // query work ที่เผยแพร่
 router.get('/published/:entId', function (req, res, next) {
     if (req.params.entId) {
