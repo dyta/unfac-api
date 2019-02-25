@@ -27,6 +27,7 @@ router.put('/:key', function (req, res, next) {
                         .set({
                             title: `${req.body.empFullname} ได้รับการยืนยันการเป็นพนักงาน`,
                             image: `${req.body.empPictureUrl}`,
+                            color: '#ddd',
                             time: new Date().getTime()
                         });
                     let event = {
@@ -44,6 +45,7 @@ router.put('/:key', function (req, res, next) {
                         .set({
                             title: `${req.body.empFullname} ถูกปลดจากการเป็นพนักงาน`,
                             image: `${req.body.empPictureUrl}`,
+                            color: '#ddd',
                             time: new Date().getTime()
                         });
                 }

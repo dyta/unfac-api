@@ -60,6 +60,7 @@ router.put("/:empLineId/:entId", async function (req, res, next) {
           .set({
             title: `${req.body.empFullname} ได้เข้ามาเป็นพนักงานใหม่`,
             image: `${req.body.empImage}`,
+            color: '#ddd',
             time: new Date().getTime()
           });
         Employee.GetEmployeeByLineID(req.params, function (err, rows) {

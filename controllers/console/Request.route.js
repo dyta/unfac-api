@@ -46,6 +46,7 @@ router.put("/:id/:entId", function (req, res, next) {
                         Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
                             title: `${req.body.empFullname} ได้รับการอนุมัติทำงาน #${req.body.rwWorkId}`,
                             image: req.body.workImages,
+                            color: '#ddd',
                             time: new Date().getTime()
                         });
                         line.handleEvent(event)
@@ -75,6 +76,7 @@ router.put("/:id/:entId", function (req, res, next) {
                             Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
                                 title: `${req.body.empFullname} ได้รับการอนุมัติทำงาน #${req.body.rwWorkId}`,
                                 image: req.body.workImages,
+                                color: '#ddd',
                                 time: new Date().getTime()
                             });
                             let event = {
