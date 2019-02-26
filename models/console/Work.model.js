@@ -13,6 +13,22 @@ const Work = {
             [entId], callback
         );
     },
+    GetCountStatistics: function (entId, callback) {
+        return db.query(
+            "SELECT " +
+            "(SELECT COUNT(`workId`) FROM Works WHERE `workStatus` > 2 ) AS `w_all`," +
+            "(SELECT COUNT(`workId`) FROM Works WHERE `workStatus` > 2 AND `workStatus` < 5 ) AS `w_enabled`," +
+            "(SELECT SUM(`maxVolume`) FROM Manufacture WHERE `mfStatus` < 4) AS `unit_process`," +
+            "(SELECT SUM(`maxVolume`) FROM Manufacture WHERE `mfStatus` = 2 ) AS `unit_check`," +
+            "(SELECT SUM(`rwVolume`) FROM RequestWork WHERE `rwStatus` = 1 ) AS `unit_request`" +
+            "FROM `Manufacture` T1" +
+            "LEFT JOIN `RequestWork` T2 on T2.`rwId` = T1.`rwId`" +
+            "JOIN `Works` T3 on T3.`workId` = T2.`rwWorkId`" +
+            "WHERE T2.`rwStatus` > 1 AND T3.`entId` = ? AND `mfStatus` < 4 LIMIT 0,1;",
+            [entId],
+            callback
+        );
+    },
     GetPublishedWorks: function (entId, callback) {
         return db.query(
             "SELECT `workId`, `workVolume`, `workImages`, `workEndAt` , `workStatus`, `workUpdateAt`,`workName`, " +

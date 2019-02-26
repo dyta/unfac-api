@@ -54,15 +54,18 @@ router.put("/:empLineId/:entId", async function (req, res, next) {
       if (err) {
         res.status(204).json(err);
       } else {
-        Firebase.activity
-          .collection(`${req.params.entId}`)
-          .doc(`${new Date().getTime()}`)
-          .set({
-            title: `${req.body.empFullname} ได้เข้ามาเป็นพนักงานใหม่`,
-            image: `${req.body.empImage}`,
-            color: '#ddd',
-            time: new Date().getTime()
-          });
+        if (req.body.empStatus !== 3) {
+          Firebase.activity
+            .collection(`${req.params.entId}`)
+            .doc(`${new Date().getTime()}`)
+            .set({
+              title: `${req.body.empFullname} ได้เข้ามาเป็นพนักงานใหม่`,
+              image: `${req.body.empImage}`,
+              color: '#ddd',
+              time: new Date().getTime()
+            });
+        }
+
         Employee.GetEmployeeByLineID(req.params, function (err, rows) {
           if (err) {
             res.json(err);

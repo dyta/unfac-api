@@ -43,6 +43,18 @@ router.get('/published/:entId', function (req, res, next) {
     }
 });
 
+// query work ที่เผยแพร่
+router.get('/statistic/:entId', function (req, res, next) {
+    if (req.params.entId) {
+        Work.GetPublishedWorks(req.params.entId, function (err, rows) {
+            if (err) res.json(err);
+            else res.json(rows);
+        });
+    } else {
+        res.status(200).json([]);
+    }
+});
+
 // เพิ่มงาน
 router.post('/', function (req, res, next) {
     if (req.body) {

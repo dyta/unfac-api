@@ -6,6 +6,7 @@ const EmployeeRouter = require("./Employee.route");
 const RequestRouter = require("./Request.route");
 const EnterpriseSettingRouter = require("./Enterprise.setting.route");
 const ManufactureRouter = require("./Manufacture.route");
+const StatisticRouter = require("./Statistic.route");
 
 module.exports = {
     AccountRouter,
@@ -15,5 +16,6 @@ module.exports = {
     EmployeeRouter,
     RequestRouter,
     EnterpriseSettingRouter,
-    ManufactureRouter
+    ManufactureRouter,
+    StatisticRouter
 }
