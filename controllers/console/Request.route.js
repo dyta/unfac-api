@@ -3,11 +3,21 @@ const router = express.Router();
 const Request = require("../../models/console/Request.model");
 const Manufacture = require("../../models/console/Manufacture.model");
 const line = require("../../models/line.handleEvent");
+const Firebase = require("../../config/firebase.admin.sdk");
 
 // query  request work ในหน้าอนุมัติ
 router.get("/:id/:enterprise", function (req, res, next) {
-    if (req.params.id && req.params.enterprise) {
+    if (req.params.id && req.params.id !== 'recent' && req.params.enterprise) {
+
         Request.GetAllRequestWorkByEnterpriseId(req.params, function (err, rows) {
+            if (err) {
+                res.json(err);
+            } else {
+                res.json(rows);
+            }
+        });
+    } else if (req.params.id === 'recent' && req.params.enterprise) {
+        Request.GetRecentRequest(req.params, function (err, rows) {
             if (err) {
                 res.json(err);
             } else {
@@ -24,7 +34,6 @@ router.put("/:id/:entId", function (req, res, next) {
     if (!req.params.entId) {
         res.status(204)
     }
-
     if (req.body.approve < req.body.rwVolume && !req.body.cutloss) {
         Request.CreateRequestSomeApprove(req.body, function (err, rows) {
             if (err) {
@@ -42,6 +51,12 @@ router.put("/:id/:entId", function (req, res, next) {
                                 work: req.body,
                             }
                         }
+                        Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
+                            title: `${req.body.empFullname} ได้รับการอนุมัติทำงาน #${req.body.rwWorkId}`,
+                            image: req.body.workImages,
+                            color: '#ddd',
+                            time: new Date().getTime()
+                        });
                         line.handleEvent(event)
                     });
                 }
@@ -66,6 +81,12 @@ router.put("/:id/:entId", function (req, res, next) {
                         if (err) {
                             res.status(200).json(err);
                         } else {
+                            Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
+                                title: `${req.body.empFullname} ได้รับการอนุมัติทำงาน #${req.body.rwWorkId}`,
+                                image: req.body.workImages,
+                                color: '#ddd',
+                                time: new Date().getTime()
+                            });
                             let event = {
                                 message: {
                                     type: 'approve_your_work',

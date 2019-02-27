@@ -7,6 +7,18 @@ const Work = {
             [entId], callback
         );
     },
+    GetAllWorksForEvent: function (entId, callback) {
+        return db.query(
+            "SELECT `workName` AS `title`, `workId` AS `id`,`workStartAt` AS `start`, `workEndAt` AS `end` , `workStatus` AS `backgroundColor`, `customerName` AS `customer` FROM `Works` WHERE `entId` = ?;",
+            [entId], callback
+        );
+    },
+    GetWorksRecentEnd: function (date, callback) {
+        return db.query(
+            "SELECT * FROM Works WHERE `entId` = ? AND (`workEndAt` BETWEEN ? AND ?) ORDER BY `workEndAt` ASC LIMIT 0,5;",
+            [date.entId, date.start, date.end], callback
+        );
+    },
     GetPublishedWorks: function (entId, callback) {
         return db.query(
             "SELECT `workId`, `workVolume`, `workImages`, `workEndAt` , `workStatus`, `workUpdateAt`,`workName`, " +

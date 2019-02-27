@@ -12,6 +12,18 @@ const request = {
             callback
         );
     },
+
+    GetRecentRequest: function (params, callback) {
+        return db.query(
+            "SELECT T3.`empPictureUrl`, T3.`empFullname`, T2.`workId`, T1.`rwVolume`, T2.`workImages`,  T1.`rwCreateAt` " +
+            "FROM `RequestWork` T1 " +
+            "JOIN `Employee` T3 ON T3.`empId` = T1.`rwEmpId`" +
+            "JOIN `Works` T2 ON T2.`workId` = T1.`rwWorkId`" +
+            "WHERE T2.`entId` = ? ORDER BY T1.`rwCreateAt` DESC LIMIT 0,7;",
+            [params.enterprise],
+            callback
+        );
+    },
     CreateRequestSomeApprove: function (r, callback) {
         return db.query(
             "Insert into `RequestWork`(`rwEmpId`, `rwStartAt`, `rwEndAt`, `rwVolume`, `rwWorkId`, `rwStatus`, `rwCreateAt`,`rwUpdateAt`) values(?,?,?,?,?,?,now(),now())",

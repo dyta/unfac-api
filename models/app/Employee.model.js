@@ -13,6 +13,12 @@ const Employee = {
             [params.entId, params.empLineId, body.displayName, body.displayName, body.pictureUrl], callback
         );
     },
+    UpdateEmployeeByLineID: function (params, body, callback) {
+        return db.query(
+            "UPDATE `Employee` SET `empDisplayName`= ?, `empPictureUrl`= ? WHERE `empLineId` = ?;",
+            [body.displayName, body.pictureUrl, params.empLineId], callback
+        );
+    },
     UpdateEmployee: function (params, body, callback) {
         return db.query(
             "UPDATE `Employee` SET `empIdentity` = ? ,`empFullname` = ?, `empAddress` = ?, `empAddress2` = ?, `empPhoneNumber` = ?, `empStatus` = ? WHERE `empLineId` = ?;",

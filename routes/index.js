@@ -12,6 +12,7 @@ app.use("/v2/employee", cs.EmployeeRouter);
 app.use("/v2/request", cs.RequestRouter);
 app.use("/v2/etp-setting", cs.EnterpriseSettingRouter);
 app.use("/v2/manufacture", cs.ManufactureRouter);
+app.use("/v2/statistic", cs.StatisticRouter);
 
 app.use("/app/employee", ln.EmployeeRouter);
 app.use("/app/enterprise", ln.EnterpriseRouter);

@@ -3,7 +3,7 @@ const db = require("../../config/mysql.connect");
 const Invite = {
     GetEnterpriseSetting: function (id, callback) {
         return db.query(
-            "SELECT * FROM `EnterpriseSetting` WHERE `entId` = ?;",
+            "SELECT * FROM `EnterpriseSetting` LEFT JOIN `Enterprise` ON `Enterprise`.`entId` = `EnterpriseSetting`.`entId` WHERE `EnterpriseSetting`.`entId` = ?;",
             [id],
             callback
         );
@@ -23,6 +23,19 @@ const Invite = {
             "VALUES (?, ?, ?, ?, ?,?, ?, ?,?, ?, ?, ?, ?, ?);",
             [id, data.api, data.liff_full_account, data.liff_tall_account, data.liff_compact_account, data.liff_full_history, data.liff_tall_history, data.liff_compact_history,
                 data.liff_full_home, data.liff_tall_home, data.liff_compact_home, data.liff_full_wallet, data.liff_tall_wallet, data.liff_compact_wallet
+            ],
+            callback
+        );
+    },
+    CreateLiffEnterpriseSetting: function (id, data, callback) {
+        return db.query(
+            "UPDATE `EnterpriseSetting` SET `liff_full_account` = ?, `liff_compact_account` = ?, " +
+            "`liff_tall_history`, `liff_compact_history`= ?," +
+            "`liff_tall_home`= ?, `liff_compact_home`= ?," +
+            "`liff_full_wallet`= ?, `liff_compact_wallet`= ?" +
+            " WHERE `entId` = ?;",
+            [data.liff_full_account, data.liff_compact_account, data.liff_tall_history, data.liff_compact_history,
+                data.liff_tall_home, data.liff_compact_home, data.liff_full_wallet, , data.liff_compact_wallet, id
             ],
             callback
         );

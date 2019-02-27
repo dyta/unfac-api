@@ -1,8 +1,6 @@
 const engine = require('../config/line.bot')
 const template = require('./line.msg.template')
 
-
-
 handleEvent = async (event) => {
     switch (event.message.type) {
         case 'work_new':
@@ -182,7 +180,12 @@ handleEvent = async (event) => {
                                 "flex": 1,
                                 "contents": [{
                                     "type": "text",
-                                    "text": "จำนวน",
+                                    "text": "คำขอ",
+                                    "size": "sm",
+                                    "weight": "bold"
+                                }, {
+                                    "type": "text",
+                                    "text": "อนุมัติ",
                                     "size": "sm",
                                     "weight": "bold"
                                 }]
@@ -196,7 +199,12 @@ handleEvent = async (event) => {
                                 "flex": 4,
                                 "contents": [{
                                         "type": "text",
-                                        "text": event.message.work.approve + " รายการ",
+                                        "text": "จำนวน " + event.message.work.rwVolume + " รายการ",
+                                        "size": "sm"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "จำนวน " + event.message.work.approve + " รายการ",
                                         "size": "sm"
                                     },
                                     {
@@ -206,6 +214,55 @@ handleEvent = async (event) => {
                                         "color": "#C1C1C1"
                                     }
                                 ]
+                            }
+                        ]
+                    }
+                }
+            });
+        case 'approve_employee':
+            return engine.client.pushMessage(event.message.employee.empLineId, {
+                "type": "flex",
+                "altText": "ได้รับการยืนยันการเป็นพนักงานเรียบร้อยแล้ว",
+                "contents": {
+                    "type": "bubble",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "md",
+                        "contents": [{
+                                "type": "text",
+                                "text": "การตรวจสอบการเป็นพนักงาน",
+                                "size": "md",
+                                "gravity": "center",
+                                "weight": "bold",
+                                "wrap": true
+                            },
+                            {
+                                "type": "separator"
+                            },
+                            {
+                                "type": "text",
+                                "text": "คุณ " + event.message.employee.empFullname,
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "ได้รับการยืนยันการเป็นพนักงานเรียบร้อยแล้ว",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "คุณสามารถเข้าใช้งานในเมนูเลือกงานได้ทันที",
+                                "margin": "none",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "filler"
+                            },
+                            {
+                                "type": "text",
+                                "text": "เวลา: " + new Date(),
+                                "size": "xxs"
                             }
                         ]
                     }

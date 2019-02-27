@@ -15,9 +15,32 @@ router.get('/:entId', function (req, res, next) {
             else res.json(rows);
         });
     } else {
-        res.status(200).json([]);
+        res.status(204).json([]);
     }
 });
+
+router.get('/:entId/events', function (req, res, next) {
+    if (req.params.entId) {
+        Work.GetAllWorksForEvent(req.params.entId, function (err, rows) {
+            if (err) res.json(err);
+            else res.json(rows);
+        });
+    } else {
+        res.status(204).json();
+    }
+});
+
+router.get('/:entId/:start/:end', function (req, res, next) {
+    if (req.params.entId && req.params.start && req.params.end) {
+        Work.GetWorksRecentEnd(req.params, function (err, rows) {
+            if (err) res.json(err);
+            else res.json(rows);
+        });
+    } else {
+        res.status(204).json();
+    }
+});
+
 
 // query work ที่เผยแพร่
 router.get('/published/:entId', function (req, res, next) {
@@ -28,7 +51,19 @@ router.get('/published/:entId', function (req, res, next) {
             else res.json(rows);
         });
     } else {
-        res.status(200).json([]);
+        res.status(204).json([]);
+    }
+});
+
+// query work ที่เผยแพร่
+router.get('/statistic/:entId', function (req, res, next) {
+    if (req.params.entId) {
+        Work.GetPublishedWorks(req.params.entId, function (err, rows) {
+            if (err) res.json(err);
+            else res.json(rows);
+        });
+    } else {
+        res.status(204).json([]);
     }
 });
 

@@ -5,7 +5,7 @@ const Firebase = require("../../config/firebase.admin.sdk");
 
 router.get("/", function (req, res, next) {
   res.render("index", {
-    title: "Express"
+    title: "Unfac.co"
   });
 });
 
@@ -30,6 +30,18 @@ router.get("/v2/account/:id", function (req, res, next) {
       } else {
         res.json(rows);
       }
+    });
+  } else {
+    res.status(204).json(false);
+  }
+});
+
+//UpdateProfile
+router.put("/v2/account/update", function (req, res, next) {
+  if (req.body) {
+    Account.UpdateUserProfile(req.body, function (err, rows) {
+      if (err) res.json(err);
+      else res.status(200).json(true);
     });
   } else {
     res.status(204).json(false);
@@ -100,7 +112,6 @@ router.post("/v2/account/auth", function (req, res, next) {
             res.status(200).json(true);
           })
           .catch(function (error) {
-            console.log("error: ", error);
             res.status(204).json(false);
           });
       })
@@ -121,7 +132,6 @@ router.post("/v2/account/auth", function (req, res, next) {
             res.status(201).json(true);
           })
           .catch(function (error) {
-            console.log("error: ", error);
             res.status(204).json(false);
           });
       });
