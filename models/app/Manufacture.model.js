@@ -12,6 +12,12 @@ const Enterprise = {
             "UPDATE `anm_database`.`Manufacture` SET `mfProgress` = ? WHERE `mfId` = ?;",
             [(params.progress + params.mfProgress), params.mfId], callback
         );
+    },
+    UpdateMFStatus: function (params, status, callback) {
+        return db.query(
+            "UPDATE `anm_database`.`Manufacture` SET `mfStatus` = ? WHERE `mfId` = ?;",
+            [status, params.mfId], callback
+        );
     }
 
 

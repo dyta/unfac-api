@@ -36,6 +36,7 @@ router.put("/:entId/progress", function (req, res, next) {
                         time: new Date().getTime()
                     });
                 if (req.body.mfProgress + req.body.progress === req.body.max) {
+                    Manufacture.UpdateMFStatus(req.body, 2)
                     let event = {
                         message: {
                             type: 'progress_your_work',
