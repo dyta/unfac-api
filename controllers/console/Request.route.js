@@ -7,8 +7,17 @@ const Firebase = require("../../config/firebase.admin.sdk");
 
 // query  request work ในหน้าอนุมัติ
 router.get("/:id/:enterprise", function (req, res, next) {
-    if (req.params.id && req.params.enterprise) {
+    if (req.params.id && req.params.id !== 'recent' && req.params.enterprise) {
+
         Request.GetAllRequestWorkByEnterpriseId(req.params, function (err, rows) {
+            if (err) {
+                res.json(err);
+            } else {
+                res.json(rows);
+            }
+        });
+    } else if (req.params.id === 'recent' && req.params.enterprise) {
+        Request.GetRecentRequest(req.params, function (err, rows) {
             if (err) {
                 res.json(err);
             } else {
@@ -25,7 +34,6 @@ router.put("/:id/:entId", function (req, res, next) {
     if (!req.params.entId) {
         res.status(204)
     }
-
     if (req.body.approve < req.body.rwVolume && !req.body.cutloss) {
         Request.CreateRequestSomeApprove(req.body, function (err, rows) {
             if (err) {
