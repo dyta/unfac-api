@@ -10,7 +10,7 @@ const Enterprise = {
     UpdateProgress: function (params, callback) {
         return db.query(
             "UPDATE `anm_database`.`Manufacture` SET `mfProgress` = ? WHERE `mfId` = ?;",
-            [params.progress, params.mfId], callback
+            [(params.progress + params.mfProgress), params.mfId], callback
         );
     }
 
