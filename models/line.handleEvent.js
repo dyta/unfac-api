@@ -1,5 +1,4 @@
 const engine = require('../config/line.bot')
-const template = require('./line.msg.template')
 
 handleEvent = async (event) => {
     switch (event.message.type) {
@@ -327,8 +326,6 @@ handleEvent = async (event) => {
             });
         case 'text':
             switch (event.message.text) {
-                case 'ดูงานของฉัน':
-                    return engine.client.replyMessage(event.replyToken, template.AlertNewWork);
                 default:
                     return Promise.resolve(null);
             }
