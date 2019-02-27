@@ -231,7 +231,7 @@ handleEvent = async (event) => {
                         "spacing": "md",
                         "contents": [{
                                 "type": "text",
-                                "text": "การตรวจสอบการเป็นพนักงาน",
+                                "text": "การยืนยันสถานะของพนักงาน",
                                 "size": "md",
                                 "gravity": "center",
                                 "weight": "bold",
@@ -242,7 +242,7 @@ handleEvent = async (event) => {
                             },
                             {
                                 "type": "text",
-                                "text": "คุณ " + event.message.employee.empFullname,
+                                "text": "คุณ" + event.message.employee.empFullname,
                                 "size": "xs"
                             },
                             {
@@ -261,7 +261,64 @@ handleEvent = async (event) => {
                             },
                             {
                                 "type": "text",
-                                "text": "เวลา: " + new Date(),
+                                "color": '#cccccc',
+                                "text": "REF: E" + event.message.employee.entId + "-U00" + event.message.employee.empId + "-T" + new Date().getTime(),
+                                "size": "xxs"
+                            }
+                        ]
+                    }
+                }
+            });
+        case 'progress_your_work':
+            return engine.client.pushMessage(event.message.employee.line, {
+                "type": "flex",
+                "altText": "การดำเนินการเสร็จสิ้นโปรดส่งมอบสินค้า",
+                "contents": {
+                    "type": "bubble",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "md",
+                        "contents": [{
+                                "type": "text",
+                                "text": "โปรดส่งมอบสินค้าแก่ต้นสังกัด",
+                                "size": "md",
+                                "gravity": "center",
+                                "weight": "bold",
+                                "wrap": true
+                            },
+                            {
+                                "type": "separator"
+                            },
+                            {
+                                "type": "text",
+                                "text": "คุณ " + event.message.employee.name,
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "ได้ดำเนินการเสร็จสิ้นโปรดส่งมอบสินค้าให้แก่",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "ต้นสังกัดเพื่อดำเนินการตรวจสอบ",
+                                "margin": "none",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "*หากไม่สะดวกกรุณาติดต่อ " + event.message.employee.tel,
+                                "margin": "none",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "filler"
+                            },
+                            {
+                                "type": "text",
+                                "color": "#cccccc",
+                                "text": "REF: MF" + event.message.employee.mfId + "-T" + event.message.employee.now,
                                 "size": "xxs"
                             }
                         ]

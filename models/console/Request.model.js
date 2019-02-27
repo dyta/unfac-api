@@ -19,7 +19,7 @@ const request = {
             "FROM `RequestWork` T1 " +
             "JOIN `Employee` T3 ON T3.`empId` = T1.`rwEmpId`" +
             "JOIN `Works` T2 ON T2.`workId` = T1.`rwWorkId`" +
-            "WHERE T2.`entId` = ? ORDER BY T1.`rwCreateAt` DESC LIMIT 0,7;",
+            "WHERE T2.`entId` = ? AND T1.`rwStatus` = 1 ORDER BY T1.`rwCreateAt` DESC LIMIT 0,7;",
             [params.enterprise],
             callback
         );

@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Manufacture = require("../../models/app/Manufacture.model");
 const Firebase = require("../../config/firebase.admin.sdk");
+const line = require("../../models/line.handleEvent");
 
 router.get("/:entId/:key/:employee", function (req, res, next) {
     if (req.params.entId) {
@@ -34,7 +35,16 @@ router.put("/:entId/progress", function (req, res, next) {
                         color: '#198f35',
                         time: new Date().getTime()
                     });
-
+                if (req.body.mfProgress + req.body.progress === req.body.max) {
+                    let event = {
+                        message: {
+                            type: 'progress_your_work',
+                            text: 'progress_your_work',
+                            employee: req.body,
+                        }
+                    }
+                    line.handleEvent(event)
+                }
                 res.status(200).json(true);
             }
         });
