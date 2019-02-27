@@ -15,7 +15,7 @@ const Work = {
     },
     GetWorksRecentEnd: function (date, callback) {
         return db.query(
-            "SELECT * FROM Works WHERE `entId` = ? AND (`workEndAt` BETWEEN ? AND ?) ORDER BY `workEndAt` DESC LIMIT 0,5;",
+            "SELECT * FROM Works WHERE `entId` = ? AND (`workEndAt` BETWEEN ? AND ?) ORDER BY `workEndAt` ASC LIMIT 0,5;",
             [date.entId, date.start, date.end], callback
         );
     },
