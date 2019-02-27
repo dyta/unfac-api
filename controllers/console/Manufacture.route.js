@@ -44,12 +44,18 @@ router.put("/:id/:entId", function (req, res, next) {
                             if (err) {
                                 res.status(204).json(false);
                             } else {
+                                if (req.body.success && req.body.full === req.body.success) {
+
+                                    Work.UpdateStatusForWork(req.body.workId, {
+                                        workStatus: 1
+                                    })
+                                }
                                 res.status(200).json(true);
                             }
                         })
-                    Work.UpdateStatusForWork(req.body.workId, {
-                        workStatus: 0
-                    })
+
+
+
                 } else {
                     res.status(200).json(true);
                 }

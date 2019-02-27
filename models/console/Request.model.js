@@ -3,7 +3,8 @@ const db = require("../../config/mysql.connect");
 const request = {
     GetAllRequestWorkByEnterpriseId: function (params, callback) {
         return db.query(
-            "SELECT T1.*, T3.`empPictureUrl`, T3.`empFullname`, T3.`empLineId`, T2.`workVolume`, T2.`workImages`, T4.`mfProgress`, T4.`mfUpdateAt`, T4.`mfId`" +
+            "SELECT T1.*, T3.`empPictureUrl`, T3.`empFullname`, T3.`empLineId`, T2.`workVolume`, T2.`workImages`, T4.`mfProgress`, T4.`mfUpdateAt`, T4.`mfId`, " +
+            "(SELECT SUM(`maxVolume`) FROM Manufacture WHERE `mfStatus` > 1 OR `mfStatus` < 5) AS `success` " +
             "FROM `RequestWork` T1 " +
             "JOIN `Employee` T3 ON T3.`empId` = T1.`rwEmpId`" +
             "JOIN `Works` T2 ON T2.`workId` = T1.`rwWorkId`" +
@@ -28,6 +29,13 @@ const request = {
         return db.query(
             "Insert into `RequestWork`(`rwEmpId`, `rwStartAt`, `rwEndAt`, `rwVolume`, `rwWorkId`, `rwStatus`, `rwCreateAt`,`rwUpdateAt`) values(?,?,?,?,?,?,now(),now())",
             [r.rwEmpId, r.rwStartAt, r.rwEndAt, r.approve, r.rwWorkId, r.newStatus],
+            callback
+        );
+    },
+    UpdateRequestSomeApproveCancel: function (r, callback) {
+        return db.query(
+            "UPDATE `RequestWork` set `rwVolume`=? WHERE `rwId` = ?",
+            [r.mfProgress, r.rwId],
             callback
         );
     },

@@ -3,7 +3,9 @@ const db = require("../../config/mysql.connect");
 const manufacture = {
     GetAllManufactureByEnterpriseId: function (params, callback) {
         return db.query(
-            "SELECT T1.*, T2.`empPictureUrl`, T2.`empFullname`, T3.`rwStatus`, T3.`rwVolume`, T4.`entId` " +
+            "SELECT T1.*, T2.`empPictureUrl`, T2.`empFullname`, T3.`rwStatus`, T3.`rwVolume`, T4.`entId`, " +
+            "(SELECT SUM(`mfProgress`) FROM Manufacture WHERE `mfStatus` = 4) AS `success`, " +
+            "T4.`workVolume` AS `full` " +
             "FROM `Manufacture` T1 " +
             "JOIN `Employee` T2 ON T2.`empId` = T1.`empId` " +
             "JOIN `RequestWork` T3 ON T3.`rwId` = T1.`rwId` " +
@@ -48,11 +50,9 @@ const manufacture = {
         );
     },
     UpdateManufactureWhenRequestWorkCancel: function (data, callback) {
-        let cals = data.rwVolume - (data.mfProgress + data.approve * 1)
-        cals === 0 ? cals = 1 : cals
         return db.query(
             "UPDATE `Manufacture` set `maxVolume`= ? WHERE `mfId` = ?",
-            [cals, data.mfId],
+            [data.mfProgress, data.mfId],
             callback
         );
     },
