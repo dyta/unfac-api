@@ -4,12 +4,13 @@ const request = {
     GetAllRequestWorkByEnterpriseId: function (params, callback) {
         return db.query(
             "SELECT T1.*, T3.`empPictureUrl`, T3.`empFullname`, T3.`empLineId`, T2.`workVolume`, T2.`workImages`, T4.`mfProgress`, T4.`mfUpdateAt`, T4.`mfId`, " +
-            "(SELECT SUM(`maxVolume`) FROM Manufacture WHERE `mfStatus` > 1 OR `mfStatus` < 5) AS `success` " +
+            "(SELECT SUM(`maxVolume`) FROM Manufacture WHERE (`mfStatus` > 1 OR `mfStatus` < 5) AND `workId` = ?) AS `success` " +
             "FROM `RequestWork` T1 " +
             "JOIN `Employee` T3 ON T3.`empId` = T1.`rwEmpId`" +
             "JOIN `Works` T2 ON T2.`workId` = T1.`rwWorkId`" +
-            "LEFT JOIN `Manufacture` T4 ON T4.`rwId` = T1.`rwId` WHERE T1.`rwWorkId` = ? AND T2.`entId` = ? GROUP BY T1.`rwId` ORDER BY `rwUpdateAt` DESC;",
-            [params.id, params.enterprise],
+            "LEFT JOIN `Manufacture` T4 ON T4.`rwId` = T1.`rwId` " +
+            "WHERE T1.`rwWorkId` = ? AND T2.`entId` = ? GROUP BY T1.`rwId` ORDER BY `rwUpdateAt` DESC;",
+            [params.id, params.id, params.enterprise],
             callback
         );
     },

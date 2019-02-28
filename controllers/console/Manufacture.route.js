@@ -37,6 +37,7 @@ router.put("/:id/:entId", function (req, res, next) {
                 res.status(204).json(false);
             } else {
                 if (req.body.toStatus === 4) {
+
                     Request.UpdateRequestWorkStatus({
                             newStatus: req.body.toStatus
                         }, req.body.rwId,

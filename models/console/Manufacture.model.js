@@ -4,14 +4,14 @@ const manufacture = {
     GetAllManufactureByEnterpriseId: function (params, callback) {
         return db.query(
             "SELECT T1.*, T2.`empPictureUrl`, T2.`empFullname`, T3.`rwStatus`, T3.`rwVolume`, T4.`entId`, " +
-            "(SELECT SUM(`mfProgress`) FROM Manufacture WHERE `mfStatus` = 4) AS `success`, " +
+            "(SELECT SUM(`mfProgress`) FROM Manufacture WHERE `mfStatus` = 4 AND `workId` = ?) AS `success`, " +
             "T4.`workVolume` AS `full` " +
             "FROM `Manufacture` T1 " +
             "JOIN `Employee` T2 ON T2.`empId` = T1.`empId` " +
             "JOIN `RequestWork` T3 ON T3.`rwId` = T1.`rwId` " +
             "JOIN `Works` T4 ON T1.`workId` = T4.`workId` " +
             "WHERE T1.`workId` = ? AND T4.`entId` = ?;",
-            [params.id, params.enterprise],
+            [params.id, params.id, params.enterprise],
             callback
         );
     },
