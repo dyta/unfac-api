@@ -15,6 +15,18 @@ router.get('/:entId', function (req, res, next) {
         res.status(204).json([]);
     }
 });
+
+router.get('/notification/:entId', function (req, res, next) {
+    if (req.params.entId) {
+        Employee.GetAllEmployeesForNotificationManual(req.params.entId, function (err, rows) {
+            if (err) res.json(err);
+            else res.json(rows);
+        });
+    } else {
+        res.status(204).json([]);
+    }
+});
+
 router.put('/:key', function (req, res, next) {
     if (req.body && req.params.key) {
         Employee.UpdateWhenConfirm(req.body, req.params.key, function (err, rows) {

@@ -13,6 +13,12 @@ const Work = {
             [entId], callback
         );
     },
+    GetAllEmployeesForNotificationManual: function (entId, callback) {
+        return db.query(
+            "SELECT `empFullname` AS `name`, `empLineId` AS `key`, `empStatus` AS `disabled` FROM `Employee` WHERE `entId` = ?;",
+            [entId], callback
+        );
+    },
     UpdateWhenConfirm: function (d, b, callback) {
         return db.query(
             "UPDATE `Employee` SET `empStatus` = 3, `userAuth` = ? WHERE `empId` = ?;",
