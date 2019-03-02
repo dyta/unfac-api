@@ -51,10 +51,18 @@ const Work = {
             [data.workName, data.workDescription, new Date(data.workStartAt), new Date(data.workEndAt), data.workEarn, data.workEarnType, id], callback
         );
     },
-    AddWork: function (data, callback) {
+    AddWork: function (data, user, callback) {
         return db.query(
-            "INSERT INTO `Works`(`workTAX`,`customerName`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, `workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, now());",
-            [data.workTAX, data.customerName, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
+            "INSERT INTO `Works`(`workTAX`,`customerName`,`customerId`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, " +
+            "`workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?, now());",
+            [data.workTAX, user.customerName, user.customerId, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
+        );
+    },
+    AddWorkIsNewCustomer: function (data, id, callback) {
+        return db.query(
+            "INSERT INTO `Works`(`workTAX`,`customerName`,`customerId`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, " +
+            "`workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?, now());",
+            [data.workTAX, data.customerName, id, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
         );
     },
     RemoveWork: function (data, callback) {
