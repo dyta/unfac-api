@@ -53,8 +53,8 @@ const Work = {
     },
     AddWork: function (data, callback) {
         return db.query(
-            "INSERT INTO `Works`(`customerName`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, `workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, now());",
-            [data.customerName, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
+            "INSERT INTO `Works`(`workTAX`,`customerName`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, `workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, now());",
+            [data.workTAX, data.customerName, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
         );
     },
     RemoveWork: function (data, callback) {
