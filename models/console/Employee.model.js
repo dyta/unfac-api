@@ -15,7 +15,7 @@ const Work = {
     },
     GetAllEmployeesForNotificationManual: function (entId, callback) {
         return db.query(
-            "SELECT `empFullname` AS `name`, `empLineId` AS `key`, `empStatus` AS `disabled` FROM `Employee` WHERE `entId` = ?;",
+            "SELECT `empFullname` AS `name`, `empLineId` AS `key`, `empStatus` AS `disabled`, `empPictureUrl` AS `img`, `empId` AS `id` FROM `Employee` WHERE `entId` = ?;",
             [entId], callback
         );
     },

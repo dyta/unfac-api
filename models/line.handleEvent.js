@@ -268,6 +268,79 @@ handleEvent = async (event) => {
                     }
                 }
             });
+        case 'send_notification_manual':
+            let message = {
+                "type": "flex",
+                "altText": "แนะนำงานสำหรับคุณ",
+                "contents": {
+                    "type": "carousel",
+                    "contents": []
+                }
+            }
+            event.message.work.forEach(work => {
+                message.contents.contents.push({
+                    "type": "bubble",
+                    "hero": {
+                        "type": "image",
+                        "url": work.workImages,
+                        "action": {
+                            "type": "uri",
+                            "label": "ดูเพิ่มเติม",
+                            "uri": event.message.liff
+                        },
+                        "size": "full",
+                        "aspectRatio": "20:13",
+                        "aspectMode": "cover"
+                    },
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "sm",
+                        "contents": [{
+                                "type": "text",
+                                "text": work.workName,
+                                "size": "xl",
+                                "weight": "bold",
+                                "wrap": true
+                            },
+                            {
+                                "type": "text",
+                                "text": 'ค่าจ้าง ' + work.workEarn + ' บาท'
+                            }
+                        ]
+                    }
+                }, )
+            })
+            message.contents.contents.push({
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "ดูเพิ่มเติม",
+                        "uri": event.message.liff
+                    },
+                    "contents": [{
+                        "type": "button",
+                        "action": {
+                            "type": "uri",
+                            "label": "ดูเพิ่มเติม",
+                            "uri": event.message.liff
+                        },
+                        "flex": 1,
+                        "gravity": "center"
+                    }]
+                }
+            })
+            return event.message.ids.forEach(element => {
+                if (element && element.length === 33 && element[0] === 'U') return engine.client.pushMessage(element, message);
+                else return Promise.resolve(null);
+
+            });
+
+
         case 'progress_your_work':
             return engine.client.pushMessage(event.message.employee.line, {
                 "type": "flex",

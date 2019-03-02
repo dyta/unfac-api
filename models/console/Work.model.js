@@ -7,6 +7,12 @@ const Work = {
             [entId], callback
         );
     },
+    GetAllWorksForNotification: function (entId, callback) {
+        return db.query(
+            "SELECT `workName`, `workId`, `workImages`, `workStatus`,`workEarn` FROM `Works` WHERE `entId` = ? ORDER BY `workId` DESC;",
+            [entId], callback
+        );
+    },
     GetAllWorksForEvent: function (entId, callback) {
         return db.query(
             "SELECT `workName` AS `title`, `workId` AS `id`,`workStartAt` AS `start`, `workEndAt` AS `end` , `workStatus` AS `backgroundColor`, `customerName` AS `customer` FROM `Works` WHERE `entId` = ?;",
