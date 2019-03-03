@@ -10,7 +10,7 @@ const Work = {
             "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 1 AND `workId` = `rwWorkId`) AS `pendingSum`, " +
             "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 2 AND `workId` = `rwWorkId`) AS `approvedSum`, " +
             "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 4 AND `workId` = `rwWorkId`) AS `completeSum`" +
-            " FROM `Works` WHERE `workStatus` > 2 AND `entId` = ? GROUP BY `workId` ORDER BY `workStatus` DESC, `workEndAt` DESC;",
+            " FROM `Works` WHERE (`workStatus` BETWEEN 3 AND 4) AND `entId` = ? GROUP BY `workId` ORDER BY `workStatus` DESC, `workEndAt` DESC;",
             [entId],
             callback
         );
