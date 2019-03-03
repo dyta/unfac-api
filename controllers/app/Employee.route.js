@@ -17,6 +17,21 @@ router.get("/:empLineId/:entId", function (req, res, next) {
   }
 });
 
+router.put("/:empLineId/:entId/status", function (req, res, next) {
+  if (req.params.empLineId && req.params.entId) {
+    let status = req.body.statusWork ? 3 : 4;
+    Employee.UpdateEmployeeStatus(req.params, status, function (err, rows) {
+      if (err) {
+        res.json(err);
+      } else {
+        res.status(200).json(true);
+      }
+    });
+  } else {
+    res.status(204);
+  }
+});
+
 router.put("/:empLineId/:entId/profile", function (req, res, next) {
   if (req.params.empLineId && req.params.entId) {
     Employee.UpdateEmployeeByLineID(req.params, req.body, function (err, rows) {
