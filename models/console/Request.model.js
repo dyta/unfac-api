@@ -53,6 +53,15 @@ const request = {
             [r.newStatus, p],
             callback
         );
+    },
+    CreateRequestWorkManual: function (r, callback) {
+        return db.query(
+            "Insert into `RequestWork`(`rwEmpId`, `rwStartAt`, `rwEndAt`, `rwVolume`, `rwCreateAt`, `rwWorkId`, `rwStatus`) values(?,?,?,?,now(),?,2)",
+            [r.id, r.startAt, r.endAt, r.assignNum, r.workId],
+            callback
+        );
     }
+
+
 };
 module.exports = request;

@@ -9,7 +9,10 @@ const Work = {
     },
     GetAllWorksForNotification: function (entId, callback) {
         return db.query(
-            "SELECT `workName`, `workId`, `workImages`, `workStatus`,`workEarn` FROM `Works` WHERE `entId` = ? ORDER BY `workId` DESC;",
+            "SELECT `workName`, `workId`, `workImages`, `workStatus`, `workEarn`, `workVolume`, `workStartAt` AS `startAt`, `workEndAt` AS `endAt`, " +
+            "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 2 AND `workId` = `rwWorkId`) AS `approvedSum`, " +
+            "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 4 AND `workId` = `rwWorkId`) AS `completeSum` " +
+            "FROM `Works` WHERE `entId` = ? ORDER BY `workId`DESC;",
             [entId], callback
         );
     },

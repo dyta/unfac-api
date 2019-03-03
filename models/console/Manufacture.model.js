@@ -30,6 +30,13 @@ const manufacture = {
             callback
         );
     },
+    CreateManufactureManual: function (r, rid, callback) {
+        return db.query(
+            "Insert into `Manufacture` (`maxVolume`,`rwId`, `empId`, `workId`, `rwEndAt`, `mfStartAt`, `mfCreateAt`,`mfUpdateAt`) values(?,?,?,?,?,now(),now(),now())",
+            [r.assignNum, rid, r.id, r.workId, r.endAt],
+            callback
+        );
+    },
     GetManufactureProcessing: function (entId, callback) {
         return db.query(
             "SELECT T1.*, T3.`workStatus`, T3.`workImages`, T3.`workEndAt`, T3.`workStartAt`, T3.`workVolume`, " +

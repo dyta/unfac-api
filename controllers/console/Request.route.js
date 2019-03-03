@@ -141,4 +141,31 @@ router.put("/:id/:entId", function (req, res, next) {
 
 });
 
+router.post("/:entId", function (req, res, next) {
+    if (req.params.entId && req.body) {
+        Request.CreateRequestWorkManual(req.body, function (err, rows) {
+            if (err) {
+                res.json(err);
+            } else {
+                Manufacture.CreateManufactureManual(req.body, rows.insertId, function (err, rows) {
+                    if (err)
+                        res.json(err);
+                    else {
+                        Firebase.activity.collection(`${req.params.entId}`).doc(`${new Date().getTime()}`).set({
+                            title: `ขอรับงานให้ ${req.body.name} เป็นกรณีพิเศษ`,
+                            image: req.body.workImages,
+                            color: '#6f42c1',
+                            time: new Date().getTime()
+                        });
+                    }
+                    res.status(200).json(true);
+                })
+
+            }
+        })
+    } else {
+        res.status(204);
+    }
+});
+
 module.exports = router;
