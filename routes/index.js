@@ -21,5 +21,6 @@ app.use("/app/enterprise", ln.EnterpriseRouter);
 app.use("/app/work", ln.WorkRouter);
 app.use("/app/request", ln.RequestRouter);
 app.use("/app/manufacture", ln.ManufactureRouter);
+app.use("/app/wallet", ln.WalletRouter);
 
 module.exports = app;

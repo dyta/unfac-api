@@ -7,6 +7,15 @@ const Enterprise = {
             [params.employee], callback
         );
     },
+    getSumaryFinished: function (params, callback) {
+        return db.query(
+            "SELECT mfProgress , workEarn, workEarnType " +
+            "FROM Manufacture " +
+            "JOIN Works ON Works.workId = Manufacture.workId " +
+            "WHERE empId = ? AND mfStatus = 4",
+            [params.empId], callback
+        );
+    },
     UpdateProgress: function (params, callback) {
         return db.query(
             "UPDATE `anm_database`.`Manufacture` SET `mfProgress` = ? WHERE `mfId` = ?;",
