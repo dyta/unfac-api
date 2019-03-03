@@ -7,6 +7,8 @@ router.get("/:entId/:empId", function (req, res, next) {
         Manufacture.getSumaryFinished(req.params, function (err, rows) {
             res.status(200).json(rows);
         })
+
+
     } else {
         res.status(204);
     }

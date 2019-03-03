@@ -9,7 +9,7 @@ const Enterprise = {
     },
     getSumaryFinished: function (params, callback) {
         return db.query(
-            "SELECT mfProgress , workEarn, workEarnType, workTAX " +
+            "SELECT mfProgress , workEarn, workEarnType " +
             "FROM Manufacture " +
             "JOIN Works ON Works.workId = Manufacture.workId " +
             "WHERE empId = ? AND mfStatus = 4",
