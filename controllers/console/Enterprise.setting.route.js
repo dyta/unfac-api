@@ -30,13 +30,13 @@ router.post("/:id", async function (req, res, next) {
         const liff_full_home = await liff.getLiff(req.params.id, public_key, process.env.LINE_LIFF_ACCESS_TOKEN, 'full', '/')
         const liff_full_history = await liff.getLiff(req.params.id, public_key, process.env.LINE_LIFF_ACCESS_TOKEN, 'full', '/history')
         const liff_tall_account = await liff.getLiff(req.params.id, public_key, process.env.LINE_LIFF_ACCESS_TOKEN, 'tall', '/account')
-        const liff_tall_wallet = await liff.getLiff(req.params.id, public_key, process.env.LINE_LIFF_ACCESS_TOKEN, 'tall', '/wallet')
+        const liff_compact_wallet = await liff.getLiff(req.params.id, public_key, process.env.LINE_LIFF_ACCESS_TOKEN, 'compact', '/wallet')
         let data = {
             api: public_key,
             liff_full_home: `line://app/${liff_full_home.liffId}`,
             liff_full_history: `line://app/${liff_full_history.liffId}`,
             liff_tall_account: `line://app/${liff_tall_account.liffId}`,
-            liff_tall_wallet: `line://app/${liff_tall_wallet.liffId}`,
+            liff_compact_wallet: `line://app/${liff_compact_wallet.liffId}`,
 
             liff_tall_home: `Upgrade to Gold`,
             liff_compact_home: `Upgrade to Gold`,
@@ -48,7 +48,7 @@ router.post("/:id", async function (req, res, next) {
             liff_compact_account: `Upgrade to Gold`,
 
             liff_full_wallet: `Upgrade to Gold`,
-            liff_compact_wallet: `Upgrade to Gold`
+            liff_tall_wallet: `Upgrade to Gold`
         }
 
         EnterpriseSetting.CreateEnterpriseSetting(req.params.id, data, function (err, rows) {

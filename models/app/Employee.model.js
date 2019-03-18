@@ -24,6 +24,12 @@ const Employee = {
             "UPDATE `Employee` SET `empIdentity` = ? ,`empFullname` = ?, `empAddress` = ?, `empAddress2` = ?, `empPhoneNumber` = ?, `empStatus` = ? WHERE `empLineId` = ?;",
             [body.empIdentity, body.empFullname, body.empAddress, body.empAddress2, body.empPhoneNumber, body.empStatus, params], callback
         );
+    },
+    UpdateEmployeeStatus: function (params, body, callback) {
+        return db.query(
+            "UPDATE `Employee` SET `empStatus` = ? WHERE `empLineId` = ? AND `entId` = ?;",
+            [body, params.empLineId, params.entId], callback
+        );
     }
 };
 module.exports = Employee;

@@ -7,6 +7,8 @@ const RequestRouter = require("./Request.route");
 const EnterpriseSettingRouter = require("./Enterprise.setting.route");
 const ManufactureRouter = require("./Manufacture.route");
 const StatisticRouter = require("./Statistic.route");
+const ReportRouter = require("./Report.route");
+const NotificationRouter = require("./Notification.route");
 
 module.exports = {
     AccountRouter,
@@ -17,5 +19,7 @@ module.exports = {
     RequestRouter,
     EnterpriseSettingRouter,
     ManufactureRouter,
-    StatisticRouter
+    StatisticRouter,
+    ReportRouter,
+    NotificationRouter
 }

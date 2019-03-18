@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Work = require("../../models/console/Work.model");
 const Employee = require("../../models/console/Employee.model");
+const Customer = require("../../models/console/Customer.model");
 const line = require("../../models/line.handleEvent");
 const liff = require("../../models/console/Enterprise.setting.model");
 const Firebase = require("../../config/firebase.admin.sdk");
@@ -11,7 +12,16 @@ router.get('/:entId', function (req, res, next) {
     if (req.params.entId) {
         Work.GetAllWorks(req.params.entId, function (err, rows) {
             if (err) res.json(err);
-
+            else res.json(rows);
+        });
+    } else {
+        res.status(204).json([]);
+    }
+});
+router.get('/notification/:entId', function (req, res, next) {
+    if (req.params.entId) {
+        Work.GetAllWorksForNotification(req.params.entId, function (err, rows) {
+            if (err) res.json(err);
             else res.json(rows);
         });
     } else {
@@ -70,18 +80,45 @@ router.get('/statistic/:entId', function (req, res, next) {
 // เพิ่มงาน
 router.post('/', function (req, res, next) {
     if (req.body) {
-        Work.AddWork(req.body, function (err, rows) {
+        Customer.GetExistsCustomer(req.body, function (err, rows) {
             if (err) res.json(err);
             else {
-                Firebase.activity.collection(`${req.body.entId}`).doc(`${new Date().getTime()}`).set({
-                    title: `งาน #${rows.insertId} ถูกเพิ่มใหม่`,
-                    color: '#56a7ff',
-                    image: `${req.body.workImages}`,
-                    time: new Date().getTime()
-                });
-                res.status(201).json(true);
+                if (rows[0].exists > 0) {
+                    Work.AddWork(req.body, rows[0], function (err, add) {
+                        if (err) res.json(err);
+                        else {
+                            Firebase.activity.collection(`${req.body.entId}`).doc(`${new Date().getTime()}`).set({
+                                title: `งาน #${add.insertId} ถูกเพิ่มใหม่`,
+                                color: '#56a7ff',
+                                image: `${req.body.workImages}`,
+                                time: new Date().getTime()
+                            });
+                            res.status(201).json(true);
+                        }
+                    });
+                } else {
+                    Customer.Add(req.body, function (err, add) {
+                        if (err) res.json(err);
+                        else {
+                            Work.AddWorkIsNewCustomer(req.body, add.insertId, function (err, addW) {
+                                if (err) res.json(err);
+                                else {
+                                    Firebase.activity.collection(`${req.body.entId}`).doc(`${new Date().getTime()}`).set({
+                                        title: `งาน #${addW.insertId} ถูกเพิ่มใหม่`,
+                                        color: '#56a7ff',
+                                        image: `${req.body.workImages}`,
+                                        time: new Date().getTime()
+                                    });
+                                    res.status(201).json(true);
+                                }
+                            });
+
+                        }
+                    });
+
+                }
             }
-        });
+        })
 
     } else {
         res.status(204).json(false)

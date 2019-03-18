@@ -7,6 +7,15 @@ const Work = {
             [entId], callback
         );
     },
+    GetAllWorksForNotification: function (entId, callback) {
+        return db.query(
+            "SELECT `workName`, `workId`, `workImages`, `workStatus`, `workEarn`, `workVolume`, `workStartAt` AS `startAt`, `workEndAt` AS `endAt`, " +
+            "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 2 AND `workId` = `rwWorkId`) AS `approvedSum`, " +
+            "(SELECT SUM(rwVolume) FROM RequestWork WHERE `rwStatus` = 4 AND `workId` = `rwWorkId`) AS `completeSum` " +
+            "FROM `Works` WHERE `entId` = ? ORDER BY `workId`DESC;",
+            [entId], callback
+        );
+    },
     GetAllWorksForEvent: function (entId, callback) {
         return db.query(
             "SELECT `workName` AS `title`, `workId` AS `id`,`workStartAt` AS `start`, `workEndAt` AS `end` , `workStatus` AS `backgroundColor`, `customerName` AS `customer` FROM `Works` WHERE `entId` = ?;",
@@ -51,10 +60,18 @@ const Work = {
             [data.workName, data.workDescription, new Date(data.workStartAt), new Date(data.workEndAt), data.workEarn, data.workEarnType, id], callback
         );
     },
-    AddWork: function (data, callback) {
+    AddWork: function (data, user, callback) {
         return db.query(
-            "INSERT INTO `Works`(`customerName`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, `workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, now());",
-            [data.customerName, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
+            "INSERT INTO `Works`(`workTAX`,`customerName`,`customerId`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, " +
+            "`workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?, now());",
+            [data.workTAX, user.customerName, user.customerId, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
+        );
+    },
+    AddWorkIsNewCustomer: function (data, id, callback) {
+        return db.query(
+            "INSERT INTO `Works`(`workTAX`,`customerName`,`customerId`, `entId`, `issuedBy`, `workDescription`, `workEarn`, `workEarnType`, " +
+            "`workEndAt`, `workImages`, `workName`, `workStartAt`, `workType`, `workVolume`, `workCreateAt`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?, now());",
+            [data.workTAX, data.customerName, id, data.entId, data.issuedBy, data.workDescription, data.workEarn, data.workEarnType, new Date(data.workEndAt), data.workImages, data.workName, new Date(data.workStartAt), data.workType, data.workVolume], callback
         );
     },
     RemoveWork: function (data, callback) {

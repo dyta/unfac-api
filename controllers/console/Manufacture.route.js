@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Manufacture = require("../../models/console/Manufacture.model");
 const Request = require("../../models/console/Request.model");
+const Work = require("../../models/console/Work.model");
 
 router.get('/:entId', function (req, res, next) {
     if (req.params.entId) {
@@ -36,6 +37,7 @@ router.put("/:id/:entId", function (req, res, next) {
                 res.status(204).json(false);
             } else {
                 if (req.body.toStatus === 4) {
+
                     Request.UpdateRequestWorkStatus({
                             newStatus: req.body.toStatus
                         }, req.body.rwId,
@@ -43,9 +45,18 @@ router.put("/:id/:entId", function (req, res, next) {
                             if (err) {
                                 res.status(204).json(false);
                             } else {
+                                if (req.body.success && req.body.full === req.body.success) {
+
+                                    Work.UpdateStatusForWork(req.body.workId, {
+                                        workStatus: 1
+                                    })
+                                }
                                 res.status(200).json(true);
                             }
                         })
+
+
+
                 } else {
                     res.status(200).json(true);
                 }

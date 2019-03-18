@@ -1,5 +1,4 @@
 const engine = require('../config/line.bot')
-const template = require('./line.msg.template')
 
 handleEvent = async (event) => {
     switch (event.message.type) {
@@ -231,7 +230,7 @@ handleEvent = async (event) => {
                         "spacing": "md",
                         "contents": [{
                                 "type": "text",
-                                "text": "การตรวจสอบการเป็นพนักงาน",
+                                "text": "การยืนยันสถานะของพนักงาน",
                                 "size": "md",
                                 "gravity": "center",
                                 "weight": "bold",
@@ -242,7 +241,7 @@ handleEvent = async (event) => {
                             },
                             {
                                 "type": "text",
-                                "text": "คุณ " + event.message.employee.empFullname,
+                                "text": "คุณ" + event.message.employee.empFullname,
                                 "size": "xs"
                             },
                             {
@@ -261,7 +260,137 @@ handleEvent = async (event) => {
                             },
                             {
                                 "type": "text",
-                                "text": "เวลา: " + new Date(),
+                                "color": '#cccccc',
+                                "text": "REF: E" + event.message.employee.entId + "-U00" + event.message.employee.empId + "-T" + new Date().getTime(),
+                                "size": "xxs"
+                            }
+                        ]
+                    }
+                }
+            });
+        case 'send_notification_manual':
+            let message = {
+                "type": "flex",
+                "altText": "แนะนำงานสำหรับคุณ",
+                "contents": {
+                    "type": "carousel",
+                    "contents": []
+                }
+            }
+            event.message.work.forEach(work => {
+                message.contents.contents.push({
+                    "type": "bubble",
+                    "hero": {
+                        "type": "image",
+                        "url": work.workImages,
+                        "action": {
+                            "type": "uri",
+                            "label": "ดูเพิ่มเติม",
+                            "uri": event.message.liff
+                        },
+                        "size": "full",
+                        "aspectRatio": "20:13",
+                        "aspectMode": "cover"
+                    },
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "sm",
+                        "contents": [{
+                                "type": "text",
+                                "text": work.workName,
+                                "size": "xl",
+                                "weight": "bold",
+                                "wrap": true
+                            },
+                            {
+                                "type": "text",
+                                "text": 'ค่าจ้าง ' + work.workEarn + ' บาท'
+                            }
+                        ]
+                    }
+                }, )
+            })
+            message.contents.contents.push({
+                "type": "bubble",
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "spacing": "sm",
+                    "action": {
+                        "type": "uri",
+                        "label": "ดูเพิ่มเติม",
+                        "uri": event.message.liff
+                    },
+                    "contents": [{
+                        "type": "button",
+                        "action": {
+                            "type": "uri",
+                            "label": "ดูเพิ่มเติม",
+                            "uri": event.message.liff
+                        },
+                        "flex": 1,
+                        "gravity": "center"
+                    }]
+                }
+            })
+            return event.message.ids.forEach(element => {
+                if (element && element.length === 33 && element[0] === 'U') return engine.client.pushMessage(element, message);
+                else return Promise.resolve(null);
+
+            });
+
+
+        case 'progress_your_work':
+            return engine.client.pushMessage(event.message.employee.line, {
+                "type": "flex",
+                "altText": "การดำเนินการเสร็จสิ้นโปรดส่งมอบสินค้า",
+                "contents": {
+                    "type": "bubble",
+                    "body": {
+                        "type": "box",
+                        "layout": "vertical",
+                        "spacing": "md",
+                        "contents": [{
+                                "type": "text",
+                                "text": "โปรดส่งมอบสินค้าแก่ต้นสังกัด",
+                                "size": "md",
+                                "gravity": "center",
+                                "weight": "bold",
+                                "wrap": true
+                            },
+                            {
+                                "type": "separator"
+                            },
+                            {
+                                "type": "text",
+                                "text": "คุณ " + event.message.employee.name,
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "ได้ดำเนินการเสร็จสิ้นโปรดส่งมอบสินค้าให้แก่",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "ต้นสังกัดเพื่อดำเนินการตรวจสอบ",
+                                "margin": "none",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "text",
+                                "text": "*หากไม่สะดวกกรุณาติดต่อ " + event.message.employee.tel,
+                                "margin": "none",
+                                "size": "xs"
+                            },
+                            {
+                                "type": "filler"
+                            },
+                            {
+                                "type": "text",
+                                "color": "#cccccc",
+                                "text": "REF: MF" + event.message.employee.mfId + "-T" + event.message.employee.now,
                                 "size": "xxs"
                             }
                         ]
@@ -270,8 +399,6 @@ handleEvent = async (event) => {
             });
         case 'text':
             switch (event.message.text) {
-                case 'ดูงานของฉัน':
-                    return engine.client.replyMessage(event.replyToken, template.AlertNewWork);
                 default:
                     return Promise.resolve(null);
             }

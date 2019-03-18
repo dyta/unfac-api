@@ -12,10 +12,8 @@ const Statistic = {
       "(SELECT SUM(S2.`rwVolume`) FROM RequestWork S2 JOIN Works S1 ON S1.`workId` = S2.`rwWorkId` WHERE S2.`rwStatus` = 2 AND S1.`workStatus` > 2 AND S1.`workStatus` < 5) AS `unit_approved`," +
       "(SELECT SUM(S2.`rwVolume`) FROM RequestWork S2 JOIN Works S1 ON S1.`workId` = S2.`rwWorkId` WHERE S2.`rwStatus` = 1 AND S1.`workStatus` > 2 AND S1.`workStatus` < 5) AS `unit_request`, " +
       "(SELECT SUM(`maxVolume`) FROM Manufacture WHERE `mfStatus` = 2 ) AS `unit_check` " +
-      "FROM `Manufacture` T1 " +
-      "LEFT JOIN `RequestWork` T2 on T2.`rwId` = T1.`rwId` " +
-      "JOIN `Works` T3 on T3.`workId` = T2.`rwWorkId` " +
-      "WHERE T2.`rwStatus` > 1 AND T3.`entId` = ? AND `mfStatus` < 4 LIMIT 0,1;",
+      "FROM `Works` T3 " +
+      "WHERE T3.`entId` = ? LIMIT 0,1;",
       [entId],
       callback
     );
